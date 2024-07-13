@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple URL Shortener</title>
+    <title>URL Shortener</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,64 +15,24 @@
 
         input,
         button {
-            font-size: 16px;
-            padding: 5px;
+            font-size: 18px;
+            padding: 10px;
         }
 
-        #shortUrl {
+        #shortened-url {
             margin-top: 20px;
+            font-size: 18px;
         }
     </style>
 </head>
 
 <body>
-    <h1>Simple URL Shortener</h1>
-    <input type="text" id="longUrl" placeholder="Enter your long URL">
-    <button onclick="shortenUrl()">Shorten</button>
-    <div id="shortUrl"></div>
+    <h1>URL Shortener</h1>
+    <input type="text" id="long-url" placeholder="Enter your long URL here">
+    <button onclick="shortenURL()">Shorten</button>
+    <div id="shortened-url"></div>
 
-    <script>
-        const urlMap = {};
-
-        function shortenUrl() {
-            const longUrl = document.getElementById('longUrl').value;
-            if (!longUrl) {
-                alert('Please enter a URL');
-                return;
-            }
-
-            const shortCode = generateShortCode();
-            urlMap[shortCode] = longUrl;
-
-            const shortUrl = `${window.location.href}#${shortCode}`;
-            document.getElementById('shortUrl').innerHTML = `Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
-
-            // Save to localStorage
-            localStorage.setItem('urlMap', JSON.stringify(urlMap));
-        }
-
-        function generateShortCode() {
-            return Math.random().toString(36).substr(2, 6);
-        }
-
-        function redirectToLongUrl() {
-            const shortCode = window.location.hash.substr(1);
-            if (shortCode) {
-                const storedMap = JSON.parse(localStorage.getItem('urlMap') || '{}');
-                const longUrl = storedMap[shortCode];
-                if (longUrl) {
-                    window.location.href = longUrl;
-                }
-            }
-        }
-
-        // Load saved mappings from localStorage
-        const storedMap = JSON.parse(localStorage.getItem('urlMap') || '{}');
-        Object.assign(urlMap, storedMap);
-
-        // Check for redirection on page load
-        window.onload = redirectToLongUrl;
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
