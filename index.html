@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-side">
+            <iframe src="https://mapgenie.io/once-human/maps/nalcott?embed=light" style="border: none;"></iframe>
+        </div>
+        <div class="right-side">
+            <h1>URL Shortener</h1>
+            <input type="text" id="long-url" placeholder="Enter your long URL here">
+            <button onclick="shortenURL()">Shorten</button>
+            <div id="shortened-url"></div>
+            <div>
+                <p>
+                    Find location on map, right click, "Copy Map View URL", Paste into Shortener, Get link
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
