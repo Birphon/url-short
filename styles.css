@@ -11,8 +11,7 @@ body {
 }
 
 .left-side {
-    flex: 3;
-    /* This makes the left side 3 times wider than the right side */
+    flex: 5;
     background-color: #f0f0f0;
 }
 
