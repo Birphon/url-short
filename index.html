@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            font-size: 16px;
+            padding: 5px;
+            margin: 5px 0;
+        }
+
+        #shortUrl {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Custom URL Shortener</h1>
+    <input type="text" id="longUrl" placeholder="Enter your long URL">
+    <input type="text" id="descriptor" placeholder="Enter a custom descriptor (optional)">
+    <button onclick="shortenUrl()">Shorten</button>
+    <div id="shortUrl"></div>
+
+    <script>
+        const urlMap = {};
+        const baseUrl = 'https://customurl.com/'; // Replace with your actual domain
+
+        function shortenUrl() {
+            const longUrl = document.getElementById('longUrl').value;
+            const descriptor = document.getElementById('descriptor').value.trim();
+            if (!longUrl) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            const id = generateShortCode();
+            const sanitizedDescriptor = descriptor ? sanitizeDescriptor(descriptor) : '';
+            const shortCode = sanitizedDescriptor ? `${id}/${sanitizedDescriptor}` : id;
+
+            urlMap[shortCode] = longUrl;
+
+            const shortUrl = `${baseUrl}${shortCode}`;
+            document.getElementById('shortUrl').innerHTML = `Short URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+
+            // Save to localStorage
+            localStorage.setItem('urlMap', JSON.stringify(urlMap));
+        }
+
+        function generateShortCode() {
+            return Math.random().toString(36).substr(2, 6);
+        }
+
+        function sanitizeDescriptor(descriptor) {
+            // Replace spaces with hyphens and remove any non-alphanumeric characters
+            return descriptor.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+        }
+
+        function redirectToLongUrl() {
+            const path = window.location.pathname.substr(1); // Remove leading slash
+            if (path) {
+                const storedMap = JSON.parse(localStorage.getItem('urlMap') || '{}');
+                const longUrl = storedMap[path];
+                if (longUrl) {
+                    window.location.href = longUrl;
+                }
+            }
+        }
+
+        // Load saved mappings from localStorage
+        const storedMap = JSON.parse(localStorage.getItem('urlMap') || '{}');
+        Object.assign(urlMap, storedMap);
+
+        // Check for redirection on page load
+        window.onload = redirectToLongUrl;
+    </script>
+</body>
+
+</html>
